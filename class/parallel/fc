@@ -1,0 +1,2 @@
+#!/bin/bash
+java -cp /home/vitor/Programming/ds-2023-02/class/parallel/target/classes inf.stream.Main "$@"

@@ -22,6 +22,11 @@ public class FileSearcher {
     private boolean filesFound = false;
 
     public FileSearcher(String[] args) {
+        if (args.length < 2) {
+            System.out.println("Uso: fc <nome_classe> <dir> [-p]");
+            return;
+        } 
+            
         this.searchPath = setAbsoluteSearchPath(args[1]);
         this.file = args[0];
         if (args.length == 3 && Arrays.asList(args).contains(parallelStreamArg)) {
@@ -35,7 +40,7 @@ public class FileSearcher {
     }
 
     public void parallelListing(String fileToFind) {
-        System.out.println("Searching in parallel...");
+        System.out.println("Buscando paralelamente...");
         List<Path> files = listFiles(searchPath);
         searchResults.addAll(files);
         files.parallelStream().forEach(path -> {
@@ -45,23 +50,23 @@ public class FileSearcher {
             }
         });
         if (!filesFound) {
-            System.out.println("No files found.");
+            System.out.println("Nenhum arquivo encontrado.");
         }
     }
 
     public void sequentialListing(String fileToFind) {
-        System.out.println("Searching sequentially...");
+        System.out.println("Buscando sequencialmente...");
         List<Path> files = listFiles(searchPath);
         searchResults.addAll(files);
 
         files.stream().forEach(path -> {
             if (path.getFileName().toString().contains(fileToFind)) {
-                System.out.println("Found file: " + path);
+                System.out.println("Arquivo encontrado: " + path);
                 filesFound = true;
             }
         });
         if (!filesFound) {
-            System.out.println("No files found.");
+            System.out.println("Nenhum arquivo encontrado.");
         }
     }
 
@@ -79,7 +84,7 @@ public class FileSearcher {
                 }
             }
         } catch (SecurityException e) {
-            System.err.println("Error while listing files: " + e.getMessage());
+            System.err.println("Falha ao listar arquivos: " + e.getMessage());
         }
         return result;
     }
